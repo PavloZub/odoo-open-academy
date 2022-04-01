@@ -8,14 +8,18 @@
     </record>
     <!-- explicit list view definition -->
 
-    <record id="open_academy_course_form" model="ir.ui.view">
+    <record model="ir.ui.view" id="open_academy_course_form" >
         <field name="name">OpenAcademy Form</field>
         <field name="model">open_academy.course</field>
         <field name="arch" type="xml">
-            <form>
-                <group>
+            <form string = "My open academy course form">
+                <group colspan="4">
                     <field name="name"/>
-                    <field name="description"/>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" nolabel="1"/>
+                        </page>
+                    </notebook>
                 </group>
             </form>
         </field>
@@ -55,7 +59,7 @@
     <!-- actions -->
     <menuitem name="List of courses" id="open_academy_menu_1_list" parent="open_academy_courses"
               action="open_academy_action_window"/>
-    <menuitem name="Server to list" id="open_academy_menu_2_server" parent="open_academy_courses"
-              action="open_academy_action_server"/>
+<!--    <menuitem name="Server to list" id="open_academy_menu_2_server" parent="open_academy_courses"-->
+<!--              action="open_academy_action_server"/>-->
   </data>
 </odoo>
