@@ -6,15 +6,14 @@
           </record>
 
           <record id="object2" model="open_academy.course">
-            <field name="name">Odoo 3</field>
-            <field name="description">Курс з Odoo 3</field>
+            <field name="name">Odoo 2</field>
+            <field name="description">Курс з Odoo 2</field>
           </record>
 
           <record id="object3" model="open_academy.course">
             <field name="name">Odoo 3</field>
             <field name="description">Курс з Odoo 3</field>
           </record>
-
 
     </data>
 </odoo>

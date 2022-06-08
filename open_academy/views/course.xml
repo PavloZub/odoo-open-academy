@@ -1,65 +1,84 @@
 <odoo>
-  <data>
-    <!-- actions opening views on models -->
-    <record model="ir.actions.act_window" id="open_academy_action_window">
-      <field name="name">OpenAcademy window</field>
-      <field name="res_model">open_academy.course</field>
-      <field name="view_mode">tree,form</field>
-    </record>
-    <!-- explicit list view definition -->
+    <data>
+        <!-- course -->
+        <record model="ir.actions.act_window" id="open_academy_course_action_window">
+            <field name="name">OpenAcademy window</field>
+            <field name="res_model">open_academy.course</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_user': 1}</field>
+        </record>
+        <!-- explicit list view definition -->
 
-    <record model="ir.ui.view" id="open_academy_course_form" >
-        <field name="name">OpenAcademy Form</field>
-        <field name="model">open_academy.course</field>
-        <field name="arch" type="xml">
-            <form string = "My open academy course form">
-                <group colspan="4">
+        <record model="ir.ui.view" id="open_academy_course_form">
+            <field name="name">OpenAcademy Form</field>
+            <field name="model">open_academy.course</field>
+            <field name="arch" type="xml">
+                <form string="My open academy course form">
+                    <group>
+                        <field name="name" required="1"/>
+                        <field name="responsible_id"/>
+                        <field name="session_ids"/>
+                        <notebook>
+                            <page string="Description">
+                                <field name="description" nolabel="1"/>
+                            </page>
+                        </notebook>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record id="open_academy_course_list" model="ir.ui.view">
+            <field name="name">OpenAcademy list</field>
+            <field name="model">open_academy.course</field>
+            <field name="arch" type="xml">
+                <tree string="Courses" decoration-warning="name=='Odoo 1'" >
                     <field name="name"/>
-                    <notebook>
-                        <page string="Description">
-                            <field name="description" nolabel="1"/>
-                        </page>
-                    </notebook>
-                </group>
-            </form>
-        </field>
-    </record>
-    <record id="open_academy_course_list" model="ir.ui.view">
-      <field name="name">OpenAcademy list</field>
-      <field name="model">open_academy.course</field>
-      <field name="arch" type="xml">
-        <tree>
-          <field name="name"/>
-          <field name="description"/>
-        </tree>
-      </field>
-    </record>
+                    <field name="responsible_id"/>
+                    <field name="description"/>
+                </tree>
 
+            </field>
+        </record>
+        <record id="open_academy_course_search" model="ir.ui.view">
+            <field name="name">Open academy search</field>
+            <field name="model">open_academy.course</field>
+            <field name="arch" type="xml">
+                <search>
+<!--                    <field name="name"/>-->
+                    <field name="description" string="Name and description"
+                           filter_domain="['|',('name','ilike',self),('description','ilike',self)]"/>
+                    <filter name="responsible_id" string="My courses"
+                            domain="[('responsible_id', '=', uid)]"/>
+                    <group string="Group By">
+                        <filter name="group_by_user" string="Responsible"
+                                context="{'group_by': 'responsible_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
 
-<!--
-    &lt;!&ndash; server action to the one above &ndash;&gt;
-    <record model="ir.actions.server" id="open_academy.action_server">
-      <field name="name">OpenAcademy server</field>
-      <field name="model_id" ref="model_open_academy_open_academy"/>
-      <field name="state">code</field>
-      <field name="code">
-        action = {
-          "type": "ir.actions.act_window",
-          "view_mode": "tree,form",
-          "res_model": model._name,
-        }
-      </field>
-    </record>
--->
-
-    <!-- Top menu item -->
-    <menuitem name="OpenAcademy" id="open_academy_menu_root"/>
-    <!-- menu categories -->
-    <menuitem name="Courses" id="open_academy_courses" parent="open_academy_menu_root"/>
-    <!-- actions -->
-    <menuitem name="List of courses" id="open_academy_menu_1_list" parent="open_academy_courses"
-              action="open_academy_action_window"/>
-<!--    <menuitem name="Server to list" id="open_academy_menu_2_server" parent="open_academy_courses"-->
-<!--              action="open_academy_action_server"/>-->
-  </data>
+<!--        <record id="action_duplicate" model="ir.actions.act_window">-->
+<!--            <field name="name">Open academy duplicate action</field>-->
+<!--            <field name="res_model">open_academy.course</field>-->
+<!--            <field name="view_type">form</field>-->
+<!--            <field name="view_mode">list,form</field>-->
+<!--        </record>-->
+<!--        &lt;!&ndash; Top menu item &ndash;&gt;-->
+<!--        <menuitem-->
+<!--                action="action_duplicate"-->
+<!--                id="action_menu_duplicate"-->
+<!--                name="Duplicate"-->
+<!--                sequence="1"/>-->
+<!--&lt;!&ndash;                parent="write_the_parent_menu_id"&ndash;&gt;-->
+        <menuitem name="OpenAcademy" id="open_academy_menu_root"/>
+        <!-- menu categories -->
+        <menuitem name="Open academy lists" id="open_academy_courses" parent="open_academy_menu_root"/>
+        <!-- actions -->
+        <menuitem name="List of courses" id="open_academy_menu_1_list" parent="open_academy_courses"
+                  action="open_academy_course_action_window"/>
+<!--        <menuitem name="List of session" id="open_academy_menu_2_list" parent="open_academy_courses"-->
+<!--                  action="open_academy_session_action_window"/>-->
+        <!--    <menuitem name="Server to list" id="open_academy_menu_2_server" parent="open_academy_courses"-->
+        <!--              action="open_academy_action_server"/>-->
+    </data>
 </odoo>

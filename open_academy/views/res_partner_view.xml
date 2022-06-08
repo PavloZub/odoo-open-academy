@@ -1,0 +1,31 @@
+<odoo>
+    <data>
+<!--        <record id="view_partner_tree_HK" model="ir.ui.view">-->
+<!--            <field name="name">res.partner.tree</field>-->
+<!--            <field name="model">res.partner</field>-->
+<!--            <field name="inherit_id" ref="view_partner_tree"/>-->
+<!--&lt;!&ndash;            <field eval="8" name="priority"/>&ndash;&gt;-->
+<!--            <field name="arch" type="xml">-->
+<!--                <xpath expr="//field[@name='active']" position="after">-->
+<!--                    <field name="instructor"/>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--        </record>-->
+         <record id="view_partner_form_inherit_academy" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet/div/h1" position="after">
+                    <group>
+                        <field name="instructor"/>
+                        <field name="session_partners_ids" widget="many2many_tags"/>
+                        <field name="teacher_category_id"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+<!--        <menuitem name="Partners" id="partners_list" parent="open_academy_courses"-->
+<!--                  action="open_academy_session_action_window"/>-->
+    </data>
+</odoo>

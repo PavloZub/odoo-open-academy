@@ -1,0 +1,166 @@
+<odoo>
+    <data>
+<!--        <record id="open_academy_session_action_window_calendar" model="ir.actions.act_window">-->
+<!--            <field name="session" eval="4"/>-->
+<!--            <field name="view_mode">calendar</field>-->
+<!--            <field name="view_id" ref="open_academy_session_calendar"/>-->
+<!--            <field name="act_window_id" ref="action_orders"/>-->
+<!--        </record>-->
+        <!--    session    -->
+        <record model="ir.actions.act_window" id="open_academy_session_action_window">
+            <field name="name">Open academy session window</field>
+            <field name="res_model">open_academy.session</field>
+            <field name="view_mode">tree,form,calendar,kanban,graph</field>
+        </record>
+<!--        <record model="ir.actions.act_window" id="open_academy_session_action_calendar">-->
+<!--            <field name="name">Sessions</field>-->
+<!--            <field name="res_model">open_academy.session</field>-->
+<!--            <field name="view_mode">calendar</field>-->
+<!--            <field name="view_id" ref="open_academy.session_calendar_view"/>-->
+<!--        </record>-->
+
+<!--        <record model="ir.ui.view" id="open_academy_session_form">-->
+<!--            <field name="name">Open academy session Form</field>-->
+<!--            <field name="model">open_academy.session</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <form string="My open academy session form">-->
+<!--                    <group>-->
+<!--                        <field name="name" required="1"/>-->
+<!--                        <field name="active"/>-->
+<!--                        <field name="start_date" required="1"/>-->
+<!--                        <field name="duration" required="1"/>-->
+<!--                        <field name="number_of_seats" required="1"/>-->
+<!--                        <field name="instructor" required="1"-->
+<!--                               domain="['|',('instructor','=','True'),('teacher_category','ilike','%level%')]"/>-->
+<!--                        <field name="course" required="1"/>-->
+<!--                        <field name="taken_seats"/>-->
+<!--                        <field name="seats_percentage"  readonly = "1"/>-->
+<!--                        <field name="attendees" />-->
+<!--                    </group>-->
+<!--                </form>-->
+<!--            </field>-->
+<!--        </record>-->
+        <record id="open_academy_session_list" model="ir.ui.view">
+            <field name="name">Open Academy session list</field>
+            <field name="model">open_academy.session</field>
+            <field name="arch" type="xml">
+                <tree decoration-danger="(duration &lt; 5)" decoration-warning="(duration &lt; 15)">
+                    <field name="name"/>
+                    <field name="active"/>
+                    <field name="start_date"/>
+                    <field name="duration"/>
+                    <field name="number_of_seats"/>
+                    <field name="instructor_id"  />
+                    <field name="course_id" />
+                    <field name="taken_seats"/>
+                    <field name="seats_percentage" widget="progressbar"/>
+                </tree>
+            </field>
+        </record>
+        <record id="open_academy_session_calendar" model="ir.ui.view">
+            <field name="name">Session calendar</field>
+            <field name="model">open_academy.session</field>
+            <field name="arch" type="xml">
+                <calendar string="Session calendar" date_start="start_date" color="name">
+                    <field name="name"/>
+                </calendar>
+            </field>
+        </record>
+        <record id="open_academy_session_graph" model="ir.ui.view">
+            <field name="name">Session graph</field>
+            <field name="model">open_academy.session</field>
+            <field name="arch" type="xml">
+                <graph string="Session graph" >
+                    <field name="course_id" type="row"/>
+                    <field name="taken_seats" type="measure"/>
+                </graph>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="open_academy_session_kanban">
+            <field name="name">open_academy.session.kanban</field>
+            <field name="model">open_academy.session</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="course_id">
+                    <field name="color"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div
+                                    t-attf-class="oe_kanban_color_{{kanban_getcolor(record.color.raw_value)}}
+                                                    oe_kanban_global_click_edit oe_semantic_html_override
+                                                    oe_kanban_card {{record.group_fancy==1 ? 'oe_kanban_card_fancy' : ''}}">
+                                <div class="oe_dropdown_kanban">
+                                    <!-- dropdown menu -->
+                                    <div class="oe_dropdown_toggle">
+                                        <i class="fa fa-bars fa-lg" title="Manage" aria-label="Manage"/>
+                                        <ul class="oe_dropdown_menu">
+                                            <!-- <li>
+                                                <a type="delete">Delete</a>
+                                            </li> -->
+                                            <!-- <li>
+                                                <ul class="oe_kanban_colorpicker"
+                                                    data-field="color"/>
+                                            </li> -->
+                                        </ul>
+                                    </div>
+                                    <div class="oe_clear"></div>
+                                </div>
+                                <div t-attf-class="oe_kanban_content">
+                                    <!-- title -->
+                                    Session name:
+                                    <field name="name"/>
+                                    <br/>
+                                    Start date:
+                                    <field name="start_date"/>
+                                    <br/>
+                                    duration:
+                                    <field name="duration"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+    
+        <record id="open_academy_session_search" model="ir.ui.view">
+            <field name="name">Open academy session search</field>
+            <field name="model">open_academy.session</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                </search>
+            </field>
+        </record>
+
+
+        <!--
+            &lt;!&ndash; server action to the one above &ndash;&gt;
+            <record model="ir.actions.server" id="open_academy.action_server">
+              <field name="name">OpenAcademy server</field>
+              <field name="model_id" ref="model_open_academy_open_academy"/>
+              <field name="state">code</field>
+              <field name="code">
+                action = {
+                  "type": "ir.actions.act_window",
+                  "view_mode": "tree,form",
+                  "res_model": model._name,
+                }
+              </field>
+            </record>
+        -->
+
+<!--
+        &lt;!&ndash; Top menu item &ndash;&gt;
+        <menuitem name="OpenAcademy" id="open_academy_menu_root"/>
+        &lt;!&ndash; menu categories &ndash;&gt;
+        <menuitem name="Courses" id="open_academy_courses" parent="open_academy_menu_root"/>
+-->
+<!--        &lt;!&ndash; actions &ndash;&gt;-->
+<!--        <menuitem name="List of courses" id="open_academy_menu_1_list" parent="open_academy_courses"-->
+<!--                  action="open_academy_course_action_window"/>-->
+        <menuitem name="List of session" id="open_academy_menu_2_list" parent="open_academy_courses"
+                  action="open_academy_session_action_window"/>
+<!--        &lt;!&ndash;    <menuitem name="Server to list" id="open_academy_menu_2_server" parent="open_academy_courses"&ndash;&gt;-->
+<!--        &lt;!&ndash;              action="open_academy_action_server"/>&ndash;&gt;-->
+    </data>
+</odoo>
